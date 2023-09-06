@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,4 +25,18 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::group([
+        'namespace' => 'App\Livewire',
+        'middleware' => [
+            'auth:sanctum',
+            config('jetstream.auth_session'),
+            'verified',
+        ],
+    ], function () {
+
+        Route::get('products', 'ProductIndex')->name('products.index');
+        Route::get('categories', 'CategoryIndex')->name('categories.index');
+    });
+
 });
